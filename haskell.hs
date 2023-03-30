@@ -19,3 +19,9 @@ somapares n | mod n 2 == 0 = n + somapares (n - 2)
 
 potencia 0 m = m
 potencia n m = 2^(n - 1) * m + 2^n * m
+
+primo n = primo' n (n - 1)
+
+primo' n 1 = "True"
+primo' n x | mod n x == 0 = "False"
+          | otherwise = primo' n (x - 1)
