@@ -47,4 +47,7 @@ multi3 x | mod x 3 == 0 = x + multi3(x - 3)
 
 --Exercício 13
 
-raizin x = floor (sqrt x)
+isInt x = x == fromInteger (round x)
+raizin 0 = 0
+raizin x | isInt (sqrt x) == True = sqrt x
+         |otherwise = raizin (x - 1)
