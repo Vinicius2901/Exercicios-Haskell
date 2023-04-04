@@ -23,8 +23,28 @@ vetores x y z x' y' z' = (x*x' + y*y' + z*z')
 
 porcentagem x y = (x / y) * 100
 
---Exercício 8
+--Exercício 9
 
-multiplo 7 = 1
+multiplo 0 = 0
 multiplo n | mod n 7 == 0 = 1 + multiplo (n - 7)
-            | otherwise = multiplo (n - 1)
+           | otherwise = multiplo (n - 1)
+
+--Exercício 10
+
+pot x 0 = 1
+pot x y = x * pot x (y-1)
+
+--Exercício 11
+
+quad 0 = 0
+quad x = x^2 + quad (x - 1)
+
+--Exercício 12
+
+multi3 0 = 0
+multi3 x | mod x 3 == 0 = x + multi3(x - 3)
+         | otherwise = multi3 (x - 1)
+
+--Exercício 13
+
+raizin x = floor (sqrt x)
