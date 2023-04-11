@@ -40,3 +40,12 @@ primo' x y | mod x y == 0 = False
 
 --Exercício 7
 
+
+
+seriePI :: Int -> Double
+seriePI n = seriePI' 1 0
+ where
+    seriePI' :: Double -> Double -> Double
+    seriePI' termo soma | termo > fromIntegral n = soma
+                        | otherwise = seriePI' (termo + 4) (soma + ((4 / termo) - (4 / (termo + 2))))
+
