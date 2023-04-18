@@ -9,6 +9,6 @@ duplicalist (x:xs) = x : x : duplicalist xs
 
 --Exercício 3
 
-inteiros [] = []
-inteiros (x:xs) | mod x 2 == 0 = inteiros xs
-                | otherwise = x : inteiros xs
+impares [] = []
+impares (x:xs) | mod x 2 == 0 = impares xs
+                | otherwise = x : impares xs 
