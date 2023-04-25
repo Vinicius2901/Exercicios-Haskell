@@ -24,3 +24,9 @@ nprimeiros n (x:xs) = x : nprimeiros (n-1) xs
 nultimos n [] = []
 nultimos n (x:xs) = inverso (nprimeiros n (inverso (x:xs)))
 
+--Exercício 5
+
+soma2 [] [] = []
+soma2 [] _ = []
+soma2 _ [] = []
+soma2 (x:xs) (y:ys) = (x + y) : soma2 xs ys
