@@ -30,3 +30,36 @@ soma2 [] [] = []
 soma2 [] _ = []
 soma2 _ [] = []
 soma2 (x:xs) (y:ys) = (x + y) : soma2 xs ys
+
+--Exercício 6
+
+pot2' 0 = []
+pot2' n = 2^n : pot2' (n-1)
+
+pot n = inverso (pot2' n)
+
+--Exercício 7
+
+intercalacao [] [] = []
+intercalacao [] (x:xs) = (x:xs)
+intercalacao (x:xs) [] = (x:xs)
+intercalacao (x:xs) (y:ys) | x < y = x : intercalacao xs (y:ys)
+                           | x == y = x : y : intercalacao xs ys
+                           | y < x = y : intercalacao (x:xs) ys
+
+--Exercício 8
+
+menor [x] = x
+menor (x:xs) | x < menor xs = x
+             | otherwise = menor xs
+
+--Exercício 9
+
+removerElem _ [] = []
+removerElem n (x:xs) | n /= x = x : removerElem n xs
+                     | otherwise = removerElem n xs
+
+--Exercício 10
+
+ordenar [] = []
+ordenar (x:xs) = menor (x:xs) : removerElem (menor (x:xs)) (ordenar xs)
