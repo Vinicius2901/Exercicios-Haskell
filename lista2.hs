@@ -97,4 +97,29 @@ minusculas (x:xs) = toLower x : minusculas xs
 --Exercício 16
 
 inversoDupla [] = []
-inversoDupla (x:xs) = (inverso (x:xs)) : inversoDupla xs
+inversoDupla ((x,y):xs) = (y,x) : inversoDupla xs
+
+--Exercício 17
+
+simetrico [] = []
+simetrico ((x,y):xs) | x == y = True : simetrico xs
+                     | otherwise = False : simetrico xs
+
+--Exercício 18
+
+numString' 0 = []
+numString' n = chr ((rem n 10) +48) : numString' (div n 10)
+
+numString n = inverso (numString' n)
+
+--Exercício 19
+
+stringNum' [] = []
+stringNum' (x:xs) = ord x -48 : stringNum' xs
+
+stringNum (x:xs) = x*10^(length-1) + stringNum xs
+
+--Exercicio 20
+
+decBin n = mod n 2
+
