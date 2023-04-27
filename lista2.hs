@@ -1,3 +1,5 @@
+import Data.Char
+
 --Exercício 1
 
 pertence _ [] = False
@@ -62,4 +64,37 @@ removerElem n (x:xs) | n /= x = x : removerElem n xs
 --Exercício 10
 
 ordenar [] = []
-ordenar (x:xs) = menor (x:xs) : removerElem (menor (x:xs)) (ordenar xs)
+ordenar ls = min : ordenar (removerElem min ls)
+        where min = menor ls --declaração de variável
+
+--Exercício 11
+
+insereOrd n [] = [n]
+insereOrd n (x:xs) | n < x = n : x : xs
+                   | pertence n (x:xs) = (x:xs)
+                   | otherwise = x : insereOrd n xs
+
+--Exercício 12
+
+enesimo n (x:xs) = (x:xs)!!(n-1)
+
+--Exercício 13
+
+repetir 0 y = []
+repetir x y = y : repetir (x-1) y
+
+--Exercício 14
+
+removeTab [] = []
+removeTab (x:xs) | '\t' == x = ' ' : removeTab xs
+                 | otherwise = x : removeTab xs
+
+--Exercício 15
+
+minusculas [] = []
+minusculas (x:xs) = toLower x : minusculas xs
+
+--Exercício 16
+
+inversoDupla [] = []
+inversoDupla (x:xs) = (inverso (x:xs)) : inversoDupla xs
