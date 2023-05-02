@@ -117,9 +117,38 @@ numString n = inverso (numString' n)
 stringNum' [] = []
 stringNum' (x:xs) = ord x -48 : stringNum' xs
 
-stringNum (x:xs) = x*10^(length-1) + stringNum xs
+stringNum'' [] = 0
+stringNum'' (x:xs) = x*10^(length(x:xs)-1) + stringNum'' xs
+
+stringNum ls = stringNum'' (stringNum' ls)
 
 --Exercicio 20
 
-decBin n = mod n 2
+decBin' 0 = [0]
+decBin' 1 = [1]
+decBin' n | mod n 2 == 1 = 1 : decBin' (div n 2)
+          | mod n 2 == 0 = 0 : decBin' (div n 2)
 
+decBin'' n = inverso (decBin' n)
+
+decBin n = numString (stringNum'' (decBin'' n))
+
+--Exercício 21
+
+binDec' (x:xs) = stringNum' (x:xs)
+
+binDec'' [] = 0
+binDec'' (x:xs) = x*2^(length(x:xs)-1) + binDec'' xs
+
+binDec ls = binDec'' (binDec' ls)
+
+--Exercício 22
+
+trocoCafe' 0 = []
+trocoCafe' x | x >= 50 = (50,div x 50) : trocoCafe' (mod x 50)
+             | x >= 20 = (20,div x 20) : trocoCafe' (mod x 20)
+             | x >= 10 = (10,div x 10) : trocoCafe' (mod x 10)
+             | otherwise = (5,div x 5) : trocoCafe' (mod x 5)
+
+trocoCafe x y | (y-x) < 5 = []
+              | otherwise = trocoCafe' (y-x)
