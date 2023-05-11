@@ -26,3 +26,6 @@ menor (x:xs) = if x < menor xs then x else menor xs
 
 removerTab [] = []
 removerTab (x:xs) = if x == '\t' then ' ' : removerTab xs else x : removerTab xs
+
+simetrico [] = []
+simetrico (x:xs) = if fst x == snd x then True : simetrico xs else False : simetrico xs
