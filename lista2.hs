@@ -76,7 +76,10 @@ insereOrd n (x:xs) | n < x = n : x : xs
 
 --Exercício 12
 
-enesimo n (x:xs) = (x:xs)!!(n-1)
+enesimo 0 (x:xs) = []
+enesimo n [] = error "não existe elemento na lista"
+enesimo n (x:xs) | n == 1 = x
+                 | otherwise = enesimo (n-1) xs
 
 --Exercício 13
 
