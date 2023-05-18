@@ -1,3 +1,5 @@
+--aula 1
+
 aplica2 f x = f(f x)
 --aplica2 f x = \x -> (x+1)(\x -> (x+1) 10)
 
@@ -9,6 +11,8 @@ inc x = x + 1
 --                inc 11 = 12
 
 \x -> x+1
+
+--aula 2
 
 maiorc x y = if x>y then x else y
 
