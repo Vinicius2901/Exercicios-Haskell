@@ -9,3 +9,22 @@ inc x = x + 1
 --                inc 11 = 12
 
 \x -> x+1
+
+maiorc x y = if x>y then x else y
+
+maiorn (x,y) = if x>y then x else y
+
+curry' = \f x y -> f (x,y)
+
+zero = \s z -> z
+um = \s z -> s z
+dois = \s z -> s (s z)
+tres = \s z -> s (s (s z))
+quatro = \s z -> s (s (s (s z)))
+
+suc = \w y x -> y (w y x)
+add = \x y w u -> x w (y w u)
+
+if' = \c x y -> c x y
+v = \a b -> a
+f = \a b -> b
