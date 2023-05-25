@@ -11,7 +11,7 @@ filtrar p (x:xs) | p x = x : filtrar p xs
 reduzir f [x] = x
 reduzir f (x:xs) = f x (reduzir f xs)
 
---adiciona o valor à esquerda
+--adiciona o valor à direita
 reduzird f aux [] = aux
 reduzird f aux (x:xs) = f x (reduzird f aux xs)
 
