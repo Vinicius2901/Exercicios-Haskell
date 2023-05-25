@@ -24,9 +24,9 @@ aplicarsobre f (x:xs) = f x : aplicarsobre f xs
 
 quadrado x = x^2
 
-posicao x = zip [1..length(x)] x
+posicao ls = zip [1..length(ls)] ls
 
-divisao x = (snd x) `div` (fst x)
+divisao dupla = (snd dupla) `div` (fst dupla)
 
 reduzird f aux [] = aux
 reduzird f aux (x:xs) = f x (reduzird f aux xs)
