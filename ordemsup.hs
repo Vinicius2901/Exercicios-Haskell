@@ -30,3 +30,5 @@ divisao dupla = (snd dupla) `div` (fst dupla)
 
 reduzird f aux [] = aux
 reduzird f aux (x:xs) = f x (reduzird f aux xs)
+
+resultado ls = reduzird (+) 0 (aplicarsobre divisao (posicao (aplicarsobre quadrado ls)))
