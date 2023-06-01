@@ -1,0 +1,8 @@
+import System.IO
+
+main :: IO ()
+main = do
+        conteudo <- readFile "alice.txt"
+        let teste = map f conteudo --Definição de teste como variável
+        putStrLn teste
+f = toUpper
