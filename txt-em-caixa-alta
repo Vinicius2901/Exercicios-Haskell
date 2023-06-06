@@ -1,8 +1,12 @@
 import System.IO
+import Data.Char
 
-main :: IO ()
+{- let: atribui algo como variável -}
+{- map: atribui char -> char -}
+{- Exemplo(map): sem map, só uma letra é transformada em maiúscula no código abaixo, com o map, todas são, pois utiliza-se de recursividade -}
+
+main :: IO()
 main = do
-        conteudo <- readFile "alice.txt"
-        let teste = map f conteudo --Definição de teste como variável
-        putStrLn teste
-f = toUpper
+    conteudo <- readFile "alice.txt"
+    let teste = map toUpper conteudo
+    putStrLn teste
