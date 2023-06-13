@@ -1,5 +1,6 @@
 import System.IO
 import Data.Char
+import Data.List
 
 type Doc = String
 type Linha = String
@@ -10,6 +11,7 @@ type Palavra = String
 pulalinha x | isSpace x = '\n'
             | otherwise = x
 
+--Numero de linhas e a respectiva linha.
 numLinhas :: [Linha] -> [(Int, Linha)]
 numLinhas ls = numLinhas' ls 1
 
@@ -30,6 +32,8 @@ palavras'' (x:xs) c ultimaPalavra | isSpace x && c < 3 = palavras'' xs 0 []
 numeraPalavras [] = []
 numeraPalavras ((nlin,lin):proxlin) = (map ((nlin,)) (words lin)) ++ numeraPalavras proxlin
 
+
+
 main :: IO ()
 main = do
     conteudo <- readFile "Alice.txt"
@@ -38,4 +42,6 @@ main = do
         nlinhas = lines maior3
         numeroLinhas = numLinhas nlinhas
         numeraPal = numeraPalavras numeroLinhas
-    print numeraPal
+        sortedPal = sortOn (map toLower . snd) numeraPal
+        
+    print sortedPal
