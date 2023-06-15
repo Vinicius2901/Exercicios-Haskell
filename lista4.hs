@@ -33,11 +33,11 @@ numeraPalavras [] = []
 numeraPalavras ((nlin,lin):proxlin) = (map ((nlin,)) (words lin)) ++ numeraPalavras proxlin
 
 --agrupar palavras iguais
-agrupar' [] = []
-agrupar' ((a,b):(c,d):xs) | not (null xs) && b == d = ([a]++[c], b) : agrupar' xs
-                         | not (null xs) && d /= snd (head xs) = agrupar' xs
-                         | xs == [] = ([a],b) : ([c], d) : []
-                         | otherwise = ([a], b) : agrupar' xs
+agrupar [] = []
+agrupar ((a,b):(c,d):xs) | not (null xs) && b == d = ([a]++[c], b) : agrupar xs
+                          | not (null xs) && d /= snd (head xs) = agrupar xs
+                          | xs == [] = ([a],b) : ([c], d) : []
+                          | otherwise = ([a], b) : agrupar xs
 
 main :: IO ()
 main = do
@@ -48,6 +48,6 @@ main = do
         numeroLinhas = numLinhas nlinhas
         numeraPal = numeraPalavras numeroLinhas
         sortedPal = sortOn (map toLower . snd) numeraPal
-        
-        
-    print sortedPal
+        palAgrupado = agrupar sortedPal
+    
+    print palAgrupado
