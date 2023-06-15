@@ -23,7 +23,7 @@ palavras' [] = []
 palavras' (x:xs) | isAlpha x || isSpace x = x : palavras' xs
                  | otherwise = palavras' xs
 
--- tirar palavras <3
+-- tirar palavras < 3
 palavras'' [] _ _ = []
 palavras'' (x:xs) c ultimaPalavra | isSpace x && c < 3 = palavras'' xs 0 []
                                   | isSpace x = ultimaPalavra ++ [x] ++ palavras'' xs 0 []
@@ -32,7 +32,18 @@ palavras'' (x:xs) c ultimaPalavra | isSpace x && c < 3 = palavras'' xs 0 []
 numeraPalavras [] = []
 numeraPalavras ((nlin,lin):proxlin) = (map ((nlin,)) (words lin)) ++ numeraPalavras proxlin
 
+--agrupar palavras iguais
+agrupar' [] = []
+agrupar' ((a,b):xs) | not (null xs) && b == snd (head xs) = (a : fst (head xs):[], b) : agrupar' xs
+                    | otherwise = ([a], b) : agrupar' xs
 
+agrupar'' [] = []
+agrupar'' ((a,b):(c,d):xs) | not (null xs) && b == d = (a,b) : agrupar'' xs
+                           | not (null xs) && d /= snd (head xs) = agrupar'' xs
+                           | xs == [] = (a,b) : (c,d) : []
+                           | otherwise = (a,b) : agrupar'' xs
+
+agrupar ls = agrupar'' (agrupar' ls)
 
 main :: IO ()
 main = do
@@ -43,5 +54,6 @@ main = do
         numeroLinhas = numLinhas nlinhas
         numeraPal = numeraPalavras numeroLinhas
         sortedPal = sortOn (map toLower . snd) numeraPal
+        palAgrupado = agrupar sortedPal
         
-    print sortedPal
+    print palAgrupado
