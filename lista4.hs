@@ -34,10 +34,17 @@ numeraPalavras ((nlin,lin):proxlin) = (map ((nlin,)) (words lin)) ++ numeraPalav
 
 --agrupar palavras iguais
 agrupar [] = []
-agrupar ((a,b):(c,d):xs) | not (null xs) && b == d = ([a]++[c], b) : agrupar xs
-                          | not (null xs) && d /= snd (head xs) = agrupar xs
-                          | xs == [] = ([a],b) : ([c], d) : []
-                          | otherwise = ([a], b) : agrupar xs
+agrupar ((x,y):xs) = ([a | (a,b) <- (x,y):xs, b == y], y) : agrupar [(a,b) | (a,b) <- (x,y):xs, b/= y]
+
+--tirar linhas repetidas
+elimina [x] = [x]
+elimina (x:xs) | x /= head xs = x : elimina xs
+               | otherwise = elimina xs
+
+eliminarRep [] = []
+eliminarRep ((x,y):xs) = (elimina x, y) : eliminarRep xs
+
+
 
 main :: IO ()
 main = do
@@ -49,5 +56,6 @@ main = do
         numeraPal = numeraPalavras numeroLinhas
         sortedPal = sortOn (map toLower . snd) numeraPal
         palAgrupado = agrupar sortedPal
+        palEliminado = eliminarRep palAgrupado
     
-    print palAgrupado
+    print palEliminado
