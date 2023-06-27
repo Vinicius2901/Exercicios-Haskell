@@ -1,4 +1,4 @@
-module trabalhofinal where
+--module trabalhofinal where
 
 import System.IO
 import Data.Char
@@ -8,7 +8,7 @@ type Doc = String
 type Linha = String
 type Palavra = String
 
-data Tree 	= Node Palavra [Int] Tree Tree | Leaf deriving Show
+data Tree = Node Palavra [Int] Tree Tree | Leaf deriving Show
 
 --construirIndice :: Doc -> [([Int], Palavra)]
 
@@ -34,7 +34,7 @@ palavras'' (x:xs) c ultimaPalavra | isSpace x && c < 3 = palavras'' xs 0 []
                                   | otherwise = palavras'' xs (c+1) (ultimaPalavra ++ [x])
 
 numeraPalavras [] = []
-numeraPalavras ((nlin,lin):proxlin) = (map ((nlin,)) (words lin)) ++ numeraPalavras proxlin
+numeraPalavras ((nlin,lin):proxlin) = (map ((, ) nlin) (words lin)) ++ numeraPalavras proxlin
 
 {-
 agrupar [] = []
@@ -46,13 +46,14 @@ insereOrd n (x:xs) | n < x = n : x : xs
                    | otherwise = x : insereOrd n xs
 
 --inserir lista em arvore
-ins x n Leaf = Nodo x [n] Leaf Leaf
-ins w n esq dir = case compare x w
-                    | LT -> Nodo w ls (ins x n esq)
-                    | EQ -> Nodo w (ins) esq dir
-                    | GT -> Node w ls esq (ins x n dir)
+ins Leaf (n,w) = Node w n Leaf Leaf
+ins (Node x ls esq dir) (n,w) = case (compare x w) of
+                               LT -> Node w ls (ins esq (n,w))
+                               EQ -> Node w (insereOrd n ls) esq dir
+                               GT -> Node w ls esq (ins dir (n,w))
 
-
+insereArvore tree [] = tree
+insereArvore tree (x:xs) = insereArvore (ins tree x) xs
 
 main :: IO ()
 main = do
@@ -62,8 +63,6 @@ main = do
         nlinhas = lines maior3
         numeroLinhas = numLinhas nlinhas
         numeraPal = numeraPalavras numeroLinhas
-        sortedPal = sortOn (map toLower . snd) numeraPal
-        palAgrupado = agrupar sortedPal
-        palEliminado = eliminarRep palAgrupado
+        palDeArvore = insereArvore Leaf numeraPal
     
-    print palEliminado
+    print palDeArvore
