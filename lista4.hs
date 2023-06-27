@@ -30,7 +30,7 @@ palavras'' (x:xs) c ultimaPalavra | isSpace x && c < 3 = palavras'' xs 0 []
                                   | otherwise = palavras'' xs (c+1) (ultimaPalavra ++ [x])
 
 numeraPalavras [] = []
-numeraPalavras ((nlin,lin):proxlin) = (map ((nlin,)) (words lin)) ++ numeraPalavras proxlin
+numeraPalavras ((nlin,lin):proxlin) = (map ((, ) nlin) (words lin)) ++ numeraPalavras proxlin
 
 --agrupar palavras iguais
 agrupar [] = []
