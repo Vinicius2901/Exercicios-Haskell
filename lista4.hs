@@ -1,3 +1,5 @@
+--module trabalhofinal where
+
 import System.IO
 import Data.Char
 import Data.List
@@ -5,6 +7,8 @@ import Data.List
 type Doc = String
 type Linha = String
 type Palavra = String
+
+data Tree = Node Palavra [Int] Tree Tree | Leaf deriving Show
 
 --construirIndice :: Doc -> [([Int], Palavra)]
 
@@ -32,19 +36,34 @@ palavras'' (x:xs) c ultimaPalavra | isSpace x && c < 3 = palavras'' xs 0 []
 numeraPalavras [] = []
 numeraPalavras ((nlin,lin):proxlin) = (map ((, ) nlin) (words lin)) ++ numeraPalavras proxlin
 
---agrupar palavras iguais
+{-
 agrupar [] = []
-agrupar ((x,y):xs) = ([a | (a,b) <- (x,y):xs, b == y], y) : agrupar [(a,b) | (a,b) <- (x,y):xs, b/= y]
+agrupar ((x,y):xs) = ([a | (a,b) <- (x,y):xs, b == y], y) : agrupar [(a,b) | (a,b) <- (x,y):xs, b/= y]-} 
 
---tirar linhas repetidas
-elimina [x] = [x]
-elimina (x:xs) | x /= head xs = x : elimina xs
-               | otherwise = elimina xs
+pertence _ [] = False
+pertence n (x:xs) = if  n==x then True else pertence n xs
 
-eliminarRep [] = []
-eliminarRep ((x,y):xs) = (elimina x, y) : eliminarRep xs
+insereOrd n [] = [n]
+insereOrd n (x:xs) | n < x = n : x : xs
+                   | pertence n (x:xs) = (x:xs)
+                   | otherwise = x : insereOrd n xs
 
+intercalacao [] [] = []
+intercalacao [] (x:xs) = (x:xs)
+intercalacao (x:xs) [] = (x:xs)
+intercalacao (x:xs) (y:ys) | x < y = x : intercalacao xs (y:ys)
+                           | x == y = x : y : intercalacao xs ys
+                           | y < x = y : intercalacao (x:xs) ys
 
+--inserir lista em arvore
+ins Leaf (n,w) = Node w n Leaf Leaf
+ins (Node x ls esq dir) (n,w) = case (compare x w) of
+                               LT -> Node w ls (ins esq (n,w)) dir
+                               EQ -> Node w (intercalacao n ls) esq dir
+                               GT -> Node w ls esq (ins dir (n,w))
+
+insereArvore tree [] = tree
+insereArvore tree (x:xs) = insereArvore (ins tree x) xs
 
 main :: IO ()
 main = do
@@ -54,8 +73,6 @@ main = do
         nlinhas = lines maior3
         numeroLinhas = numLinhas nlinhas
         numeraPal = numeraPalavras numeroLinhas
-        sortedPal = sortOn (map toLower . snd) numeraPal
-        palAgrupado = agrupar sortedPal
-        palEliminado = eliminarRep palAgrupado
+        palDeArvore = insereArvore Leaf numeraPal
     
-    print palEliminado
+    print palDeArvore
