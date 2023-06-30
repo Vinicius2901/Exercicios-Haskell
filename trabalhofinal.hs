@@ -39,6 +39,9 @@ numeraPalavras ((nlin,lin):proxlin) = (map ((, ) nlin) (words lin)) ++ numeraPal
 {-
 agrupar [] = []
 agrupar ((x,y):xs) = ([a | (a,b) <- (x,y):xs, b == y], y) : agrupar [(a,b) | (a,b) <- (x,y):xs, b/= y]-} 
+pertence _ [] = False
+pertence n (x:xs) = if  n==x then True else pertence n xs
+
 
 insereOrd n [] = [n]
 insereOrd n (x:xs) | n < x = n : x : xs
@@ -46,14 +49,17 @@ insereOrd n (x:xs) | n < x = n : x : xs
                    | otherwise = x : insereOrd n xs
 
 --inserir lista em arvore
-ins Leaf (n,w) = Node w n Leaf Leaf
+ins Leaf (n,w) = Node w [n] Leaf Leaf
 ins (Node x ls esq dir) (n,w) = case (compare x w) of
-                               LT -> Node w ls (ins esq (n,w))
+                               LT -> Node w ls (ins esq (n,w)) dir
                                EQ -> Node w (insereOrd n ls) esq dir
                                GT -> Node w ls esq (ins dir (n,w))
 
-insereArvore tree [] = tree
-insereArvore tree (x:xs) = insereArvore (ins tree x) xs
+mIndexTree tree [] = tree
+mIndexTree tree (x:xs) = mIndexTree (ins tree x) xs
+
+printar Leaf = []
+printar (Node pal ls esq dir) = printar esq ++ pal ++ " - " ++ (show ls) ++ printar dir
 
 main :: IO ()
 main = do
@@ -63,6 +69,7 @@ main = do
         nlinhas = lines maior3
         numeroLinhas = numLinhas nlinhas
         numeraPal = numeraPalavras numeroLinhas
-        palDeArvore = insereArvore Leaf numeraPal
+        palDeArvore = mIndexTree Leaf numeraPal
+        printaPal = printar palDeArvore
     
-    print palDeArvore
+    print printaPal
