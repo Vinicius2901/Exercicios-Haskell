@@ -8,7 +8,7 @@ type Doc = String
 type Linha = String
 type Palavra = String
 
-data Tree = Node Palavra [Int] Tree Tree | Leaf deriving Show
+data Tree = Node [Int] Palavra Tree Tree | Leaf deriving Show
 
 --construirIndice :: Doc -> [([Int], Palavra)]
 
@@ -39,28 +39,25 @@ numeraPalavras ((nlin,lin):proxlin) = (map ((, ) nlin) (words lin)) ++ numeraPal
 {-
 agrupar [] = []
 agrupar ((x,y):xs) = ([a | (a,b) <- (x,y):xs, b == y], y) : agrupar [(a,b) | (a,b) <- (x,y):xs, b/= y]-} 
-pertence _ [] = False
-pertence n (x:xs) = if  n==x then True else pertence n xs
-
-
-insereOrd n [] = [n]
-insereOrd n (x:xs) | n < x = n : x : xs
-                   | pertence n (x:xs) = (x:xs)
-                   | otherwise = x : insereOrd n xs
+insereOrd e [] = [e]
+insereOrd e l@(x:xs)  |e == x = l
+                      |e < x = (e:l)
+                      |otherwise = (x:insereOrd e xs)
 
 --inserir lista em arvore
-ins Leaf (n,w) = Node w [n] Leaf Leaf
-ins (Node x ls esq dir) (n,w) = case (compare x w) of
-                               LT -> Node w ls (ins esq (n,w)) dir
-                               EQ -> Node w (insereOrd n ls) esq dir
-                               GT -> Node w ls esq (ins dir (n,w))
 
-mIndexTree tree [] = tree
-mIndexTree tree (x:xs) = mIndexTree (ins tree x) xs
+ins Leaf y x = Node [y] x  Leaf Leaf
+ins (Node i s esq dir) y x |x == s = Node (insereOrd y i) s esq dir
+                           |x < s = Node i s (ins esq y x) dir
+                           |otherwise = Node i s esq (ins dir y x)
 
-printar Leaf = []
-printar (Node pal ls esq dir) = printar esq ++ pal ++ " - " ++ (show ls) ++ printar dir
+mIndexTree [] tree = tree
+mIndexTree ((y,x):xs) tree = mIndexTree xs (ins tree y x)
 
+printar Leaf = return ()
+printar (Node l p esq dir) = do printar esq
+                                putStrLn (p ++ " - " ++ show l)
+                                printar dir
 main :: IO ()
 main = do
     conteudo <- readFile "Alice.txt"
@@ -69,7 +66,6 @@ main = do
         nlinhas = lines maior3
         numeroLinhas = numLinhas nlinhas
         numeraPal = numeraPalavras numeroLinhas
-        palDeArvore = mIndexTree Leaf numeraPal
-        printaPal = printar palDeArvore
-    
-    print printaPal
+        palDeArvore = mIndexTree numeraPal Leaf 
+    --print numeraPal
+    printar palDeArvore
